@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="../static/css/reset.css">
+        <link rel="stylesheet" href="../static/css/index.css">
+        <title>MLTRSC</title>
+    </head>
+    <body>
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul id="messages" class="list-unstyled">
+                        {% for message in messages %}
+                            <li class="alert alert-success">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('inseriData') }}" method="POST">
+                <h1>{{ titulo }}</h1>
+                <label for="insercao">Insira uma data: </label>
+                <input type="date" name="data" id="data">
+                <button type="submit">Calcular...</button>
+            </form>
+            <fieldset class="resultado">
+                <p>Resultado: {{ resultado }}</p>
+            </fieldset>
+        </div>
+    </body>
+</html>

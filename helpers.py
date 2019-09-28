@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from datetime import date, datetime, timezone
+from datetime import date
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from lightgbm import LGBMRegressor
@@ -34,7 +34,7 @@ def obterFeriadosManual():
     return feriados
 
 def criaModeloPrevDia(nomeArqv):
-    dfDia = pd.read_csv(f'./files/{nomeArqv}.csv', sep=';', index_col=0)
+    dfDia = pd.read_csv(f'./{nomeArqv}.csv', sep=';', index_col=0)
 
     dfDia['data'] = pd.to_datetime(dfDia['data'], format='%Y-%m-%d')
     anoMin = dfDia['data'].min().year
@@ -171,6 +171,7 @@ def realizaPrevDia(data, tipoTrsc, periodo):
 
     prev = int(lgb_model.predict(np.array([entrd])))
     print('Dia: {:02d} LGBR: {}'.format(data.day, prev))
+    return prev
 
 def realizaPrevMes():
     pass

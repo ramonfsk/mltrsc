@@ -1,13 +1,20 @@
 from flask import render_template, request, redirect, session, flash, url_for, send_from_directory
 from mltrsc import db, app
+from helpers import *
+
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+def index(prevD):
+  return render_template(
+    'template.html',
+    titulo = 'MLTRSC',
+    resultado = prevD
+  )
 
-@app.route('/dia')
-def prevDia():
-    pass
+@app.route('/inseriData', methods=['POST', ])
+def inseriData():
+  data = request.form['data']
+  return render_template('template.html', resultado = realizaPrevDia(data, 'n', 'd'))
 
 @app.route('/mes')
 def prevMes():
