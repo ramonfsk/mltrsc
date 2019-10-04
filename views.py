@@ -4,17 +4,19 @@ from helpers import *
 
 
 @app.route('/')
-def index(prevD):
+@app.route('/index')
+@app.route('/index/<prev>')
+def index(titulo='Previsão diária', prev=0):
   return render_template(
     'template.html',
-    titulo = 'MLTRSC',
-    resultado = prevD
+    titulo=titulo,
+    resultado=prev
   )
 
 @app.route('/inseriData', methods=['POST', ])
 def inseriData():
   data = request.form['data']
-  return render_template('template.html', resultado = realizaPrevDia(data, 'n', 'd'))
+  return render_template('template.html', titulo='Previsão diária', resultado=realizaPrevDia(data, 'n', 'd'))
 
 @app.route('/mes')
 def prevMes():

@@ -4,30 +4,72 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" href="../static/css/reset.css">
         <link rel="stylesheet" href="../static/css/index.css">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../static/css/bootstrap.min.css">
         <title>MLTRSC</title>
     </head>
     <body>
-        <div class="container">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul id="messages" class="list-unstyled">
-                        {% for message in messages %}
-                            <li class="alert alert-success">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <form action="{{ url_for('inseriData') }}" method="POST">
-                <h1>{{ titulo }}</h1>
-                <label for="insercao">Insira uma data: </label>
-                <input type="date" name="data" id="data">
-                <button type="submit">Calcular...</button>
-            </form>
-            <fieldset class="resultado">
-                <p>Resultado: {{ resultado }}</p>
-            </fieldset>
-        </div>
+        <header>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="dia-tab" data-toggle="tab" href="#dia" role="tab" aria-controls="dia" aria-selected="true">Dia</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="periodo-tab" data-toggle="tab" href="#periodo" role="tab" aria-controls="periodo" aria-selected="false">Periodo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="trilhaDev-tab" data-toggle="tab" href="#trilhaDev" role="tab" aria-controls="trilhaDev" aria-selected="false">Trilha de Dev</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="contato-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contato" aria-selected="false">Contate-nos</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="dia" role="tabpanel" aria-labelledby="dia-tab">
+                    <div class="container">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul id="messages" class="list-unstyled">
+                                {% for message in messages %}
+                                   <li class="alert alert-success">{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% endwith %}
+                        <section id="calculo-ml">
+                            <h1 class="display-4">{{ titulo }}</h1>
+                            <p>Escolha uma data abaixo para realizar a previsão!</p>
+                            <form action="{{ url_for('inseriData') }}" method="POST">
+                                <div class="input-group mb-3">
+                                    <input id="data" class="form-control" aria-label="Recipient" type="date" name="data">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit">Calcular</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+
+                        <section id="resultado">
+                            <p>Resultado: {{ resultado }}</p>
+                        </section>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="periodo" role="tabpanel" aria-labelledby="periodo-tab">...</div>
+                <div class="tab-pane fade" id="trilhaDev" role="tabpanel" aria-labelledby="trilhaDev-tab">...</div>
+                <div class="tab-pane fade" id="contato" role="tabpanel" aria-labelledby="contato-tab">...</div>
+            </div>
+        </header>
+
+        <footer>
+            <address>
+                <strong>&copy Área de Operações de T.I.</strong><br>
+                <p>Developer by Ramon Ferreira</p>
+            </address>
+        </footer>
+    <!-- JavaScript -->
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/popper.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
     </body>
 </html>
