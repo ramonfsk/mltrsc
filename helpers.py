@@ -212,10 +212,7 @@ def realizaPrevMes():
     pass
 
 def realizaPrevPeriodoDiario(dataInicio, dataFim, tipoTrsc, periodo):
-    data_prd = pd.date_range(start=dataInicio, end=dataFim, freq=periodo.upper())
-
-    for i in range(len(data_prd)):
-        realizaPrevDia(data_prd[i].strftime('%Y-%m-%d'), tipoTrsc, periodo)
+    pass
 
 def realizaPrevPeriodoMensal():
     pass
