@@ -33,8 +33,15 @@ def obterFeriadosManual():
     feriados = pd.DataFrame({'data': feriados})
     return feriados
 
-def criaModeloPrevDia(nomeArqv):
-    dfDia = pd.read_csv(f'Z:\\mltrsc\\files\\{nomeArqv}.csv', sep=';', index_col=0)
+def criaModeloPrevDia(tipoTrsc):
+    
+    tipoTrsc.lower()
+    if tipoTrsc == 'n':
+        dfDia = pd.read_csv('Z:\\mltrsc\\files\\qtdTrscNgc_Diario.csv', sep=';', index_col=0)
+    elif tipoTrsc == 't':
+        dfDia = pd.read_csv('Z:\\mltrsc\\files\\qtdTrsc_Diario.csv', sep=';', index_col=0)
+    else:
+        return None
 
     dfDia['data'] = pd.to_datetime(dfDia['data'], format='%Y-%m-%d')
     anoMin = dfDia['data'].min().year
@@ -106,7 +113,6 @@ def criaModeloPrevDia(nomeArqv):
     dfDia['inicioMes'] = (dfDia['dia'] < 15)
 
     trocar = {True: 1, False: 0}
-
     dfDia['diaUtil'] = dfDia['diaUtil'].map(trocar)
     dfDia['inicioMes'] = dfDia['inicioMes'].map(trocar)
     #dfDia['fimMes'] = dfDia['fimMes'].map(trocar)
@@ -128,7 +134,7 @@ def treinaML(df):
             'seg', 'diaUtil5', 'diaUtil10', 'inicioSemana', 'semanaAno', 'inicioMes']]
     y = df['qtd']
 
-    SEED = 5
+    SEED = 3
     np.random.seed(SEED)
     x_treino, x_teste, y_treino, y_teste = train_test_split(x, y, test_size=0.33, random_state=SEED)
     print("Treinaremos com %d elementos e testaremos com %d elementos" % (len(x_treino), len(x_teste)))
@@ -141,27 +147,19 @@ def treinaML(df):
 
     return lgb_model
 
-def realizaPrevDia(data, tipoTrsc, periodo):
+def realizaPrevDia(data, lgb_model):
+
     data = pd.to_datetime(data, format='%Y-%m-%d')
 
-    tipoTrsc.lower()
-    periodo.lower()
-
-    if (tipoTrsc == 'n') & (periodo == 'd'):
-        nomeArqv = 'qtdTrscNgc_Diario'
-    elif (tipoTrsc == 't') & (periodo == 'd'):
-        nomeArqv = 'qtdTrsc_Diario'
-
-    lgb_model = treinaML(criaModeloPrevDia(nomeArqv))
     entrd = []
     frds = obterFeriadosAuto(data.year, data.year)
 
     for i in range(len(frds)):
-       if frds.data[i] == data:
-           entrd.append(1)#Feriado
-       else:
-           entrd.append(0)#Feriado
-           break
+        if frds.data[i] == data:
+            entrd.append(1)#Feriado
+        else:
+            entrd.append(0)#Feriado
+        break
     entrd.append(data.day)#Dia
     entrd.append(data.month)#Mes
     entrd.append(data.year)#Ano

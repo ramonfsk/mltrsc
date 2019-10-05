@@ -39,8 +39,16 @@
                         {% endwith %}
                         <section id="calculo-ml">
                             <h1 class="display-4">{{ titulo }}</h1>
-                            <p>Escolha uma data abaixo para realizar a previsão!</p>
-                            <form action="{{ url_for('inseriData') }}" method="POST">
+                            <form action="{{ url_for('realizaPrev') }}" method="POST">
+                                <p>Selecione qual o tipo de transação e escolha uma data:</p>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-secondary active">
+                                    <input type="radio" name="tipoTrsc" value ="n" id="ngc" autocomplete="off" checked> Negócio
+                                    </label>
+                                    <label class="btn btn-secondary">
+                                    <input type="radio" name="tipoTrsc" value ="t" id="total" autocomplete="off"> TOTAL
+                                    </label>
+                                </div>
                                 <div class="input-group mb-3">
                                     <input id="data" class="form-control" aria-label="Recipient" type="date" name="data">
                                     <div class="input-group-append">
@@ -62,10 +70,9 @@
         </header>
 
         <footer>
-            <address>
-                <strong>&copy Área de Operações de T.I.</strong><br>
-                <p>Developer by Ramon Ferreira</p>
-            </address>
+            <h5>&copy Área de Operações de T.I.</h5>
+            <h6>Developer by Ramon Ferreira</h6>
+            <h6>Ramal: 8637</h6>
         </footer>
     <!-- JavaScript -->
     <script src="../static/js/jquery.min.js"></script>

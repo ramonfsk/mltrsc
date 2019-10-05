@@ -2,6 +2,8 @@ from flask import render_template, request, redirect, session, flash, url_for, s
 from mltrsc import db, app
 from helpers import *
 
+lgb_model_n = treinaML(criaModeloPrevDia('n'))
+lgb_model_t = treinaML(criaModeloPrevDia('t'))
 
 @app.route('/')
 @app.route('/index')
@@ -13,10 +15,19 @@ def index(titulo='Previsão diária', prev=0):
     resultado=prev
   )
 
-@app.route('/inseriData', methods=['POST', ])
-def inseriData():
+@app.route('/realizaPrev', methods=['POST', ])
+def realizaPrev():
   data = request.form['data']
-  return render_template('template.html', titulo='Previsão diária', resultado=realizaPrevDia(data, 'n', 'd'))
+  tipoTrsc = request.form['tipoTrsc']
+  if tipoTrsc == 'n':
+    resultado = realizaPrevDia(data, lgb_model_n)
+  else:
+    resultado = realizaPrevDia(data, lgb_model_t)
+  return render_template(
+    'template.html', 
+    titulo='Previsão diária', 
+    resultado=resultado
+  )
 
 @app.route('/mes')
 def prevMes():
