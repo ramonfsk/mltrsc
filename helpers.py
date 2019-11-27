@@ -130,13 +130,12 @@ def criaModeloPrevMes(nomeArqv):
     return dfMes
 
 def treinaML(df):
-    x = df[['feriado', 'dia', 'mes', 'ano', 'diaAno', 'diaSemana', 'diaUtil', 'segDia5', 'segDia10', 'diaDeProducao',
-            'seg', 'diaUtil5', 'diaUtil10', 'inicioSemana', 'semanaAno', 'inicioMes']]
+    x = df[['feriado', 'dia', 'mes', 'ano', 'diaAno', 'diaSemana', 'diaUtil', 'segDia5', 'segDia10','diaDeProducao','seg', 'diaUtil5', 'diaUtil10', 'inicioSemana', 'semanaAno', 'inicioMes']]
     y = df['qtd']
 
-    SEED = 3
+    SEED = 5
     np.random.seed(SEED)
-    x_treino, x_teste, y_treino, y_teste = train_test_split(x, y, test_size=0.33, random_state=SEED)
+    x_treino, x_teste, y_treino, y_teste = train_test_split(x, y, test_size=0.30, random_state=SEED)
     print("Treinaremos com %d elementos e testaremos com %d elementos" % (len(x_treino), len(x_teste)))
 
     lgb_model = LGBMRegressor()
@@ -211,8 +210,13 @@ def realizaPrevDia(data, lgb_model):
 def realizaPrevMes():
     pass
 
-def realizaPrevPeriodoDiario(dataInicio, dataFim, tipoTrsc, periodo):
+def realizaPrevPeriodoDiario(dataInicio, qtdDias, lgb_model):
     pass
+
 
 def realizaPrevPeriodoMensal():
     pass
+
+def daterange(start_date, end_date):
+    for n in range(int ((end_date - start_date).days)):
+        yield start_date + timedelta(n)

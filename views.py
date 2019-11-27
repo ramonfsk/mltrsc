@@ -8,16 +8,19 @@ lgb_model_t = treinaML(criaModeloPrevDia('t'))
 @app.route('/')
 @app.route('/index')
 @app.route('/index/<prev>')
-def index(titulo='Previsão diária', prev=0):
+@app.route('/index/<prev><dataInicio><qtdDias>')
+def index(titulo='Previsão diária', prev=None, dataInicio=None, qtdDias=None):
   return render_template(
     'template.html',
     titulo=titulo,
-    resultado=prev
+    resultado=prev,
+    dataInicio=dataInicio,
+    qtdDias=qtdDias
   )
 
-@app.route('/realizaPrev', methods=['POST', ])
-def realizaPrev():
-  data = request.form['data']
+@app.route('/realizaPrevD', methods=['POST', ])
+def realizaPrevD():
+  data = request.form['dataD']
   tipoTrsc = request.form['tipoTrsc']
   if tipoTrsc == 'n':
     resultado = realizaPrevDia(data, lgb_model_n)
@@ -29,9 +32,20 @@ def realizaPrev():
     resultado=resultado
   )
 
-@app.route('/mes')
-def prevMes():
-    pass
+@app.route('/realizaPrevP', methods=['POST', ])
+def realizaPrevP():
+  dataInicio = request.form['dataP']
+  dataFim = request.form['dataP']
+  tipoTrsc = request.form['tipoTrsc']
+  if tipoTrsc == 'n':
+    resultado = realizaPrevDia(data, lgb_model_n)
+  else:
+    resultado = realizaPrevDia(data, lgb_model_t)
+  return render_template(
+    'template.html', 
+    titulo='Previsão de período', 
+    resultado=resultado
+  )
 
 @app.route('/periodoDias')
 def prevPeriodoDias():

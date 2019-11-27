@@ -7,10 +7,21 @@
         <link rel="stylesheet" href="../static/css/index.css">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+        <!-- DateRangePicker -->
+        <link rel="stylesheet" href="../static/css/daterangepicker.css">
         <title>MLTRSC</title>
     </head>
     <body>
         <header>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul id="messages" class="list-unstyled">
+                    {% for message in messages %}
+                        <li class="alert alert-success">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% endwith %}
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="dia-tab" data-toggle="tab" href="#dia" role="tab" aria-controls="dia" aria-selected="true">Dia</a>
@@ -28,18 +39,9 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="dia" role="tabpanel" aria-labelledby="dia-tab">
                     <div class="container">
-                        {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                            <ul id="messages" class="list-unstyled">
-                                {% for message in messages %}
-                                   <li class="alert alert-success">{{ message }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                        {% endwith %}
                         <section id="calculo-ml">
                             <h1 class="display-4">{{ titulo }}</h1>
-                            <form action="{{ url_for('realizaPrev') }}" method="POST">
+                            <form action="{{ url_for('realizaPrevD') }}" method="POST">
                                 <p>Selecione qual o tipo de transação e escolha uma data:</p>
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label class="btn btn-secondary active">
@@ -50,7 +52,7 @@
                                     </label>
                                 </div>
                                 <div class="input-group mb-3">
-                                    <input id="data" class="form-control" aria-label="Recipient" type="date" name="data">
+                                    <input id="data" class="form-control" aria-label="Recipient" type="text" name="dataD" required>
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="submit">Calcular</button>
                                     </div>
@@ -63,7 +65,36 @@
                         </section>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="periodo" role="tabpanel" aria-labelledby="periodo-tab">...</div>
+                <div class="tab-pane fade" id="periodo" role="tabpanel" aria-labelledby="periodo-tab">
+                    <div class="container">
+                        <section id="calculo-ml">
+                            <h1 class="display-4">{{ titulo }}</h1>
+                            <form action="{{ url_for('realizaPrevP') }}" method="POST">
+                                <p>Selecione qual o tipo de transação e escolha um período de data:</p>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-secondary active">
+                                    <input type="radio" name="tipoTrsc" value ="n" id="ngc" autocomplete="off" checked> Negócio
+                                    </label>
+                                    <label class="btn btn-secondary">
+                                    <input type="radio" name="tipoTrsc" value ="t" id="total" autocomplete="off"> TOTAL
+                                    </label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <input id="data" class="form-control" aria-label="Recipient" type="text" name="dataP" required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit">Calcular</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+
+                        <section id="resultado">
+                            <p>Resultado: {{ resultado }}</p>
+                            <p name="dataInicio">DataInicio: {{ dataInicio }}</p>
+                            <p name="qtdDias">QtdDias: {{ qtdDias }}</p>
+                        </section>
+                    </div>
+                </div>
                 <div class="tab-pane fade" id="trilhaDev" role="tabpanel" aria-labelledby="trilhaDev-tab">...</div>
                 <div class="tab-pane fade" id="contato" role="tabpanel" aria-labelledby="contato-tab">...</div>
             </div>
@@ -71,12 +102,20 @@
 
         <footer>
             <h5>&copy Área de Operações de T.I.</h5>
-            <h6>Developer by Ramon Ferreira</h6>
+            <h6>Developed by Ramon Ferreira</h6>
             <h6>Ramal: 8637</h6>
         </footer>
-    <!-- JavaScript -->
+    <!-- JQuery -->
     <script src="../static/js/jquery.min.js"></script>
+    <!-- PopperJS -->
     <script src="../static/js/popper.min.js"></script>
+    <!-- BootstrapJS -->
     <script src="../static/js/bootstrap.min.js"></script>
+    <!-- MomentJS -->
+    <script src="../static/js/moment.min.js"></script>
+    <!-- DateRangePickerJS -->
+    <script src="../static/js/daterangepicker.min.js"></script>
+    <script src="../static/js/cfgDateRangePickerD.js"></script>
+    <script src="../static/js/cfgDateRangePickerP.js"></script>
     </body>
 </html>
